@@ -1,28 +1,17 @@
-variable region {
-	default = "us-east-1"
-}
-variable subnet_list {
-    type = "list"
-    default = ["app","private","web","public"]
-}
+variable region {}
+variable subnet_list { type = "list" }
 variable availability_zone {
     type = "list"
     default = ["a","b","c"]
 }
-variable cidr_block {
-	default  = "10.10.0.0/16"
-}
+variable cidr_block {}
+
 variable tags {
 	type = "map"
 	default {
-		Name = "ServicesVPC"
+		Name = "test-vpc"
 		Owner = "SamsonGudise"
-		Purpose = "Service"
+		Purpose = "Test"
 	}
 }
-variable peer_vpc_id {
-	default = "vpc-xyzabc456789"
-}
-variable zone_name {
-	default = "k8scluster.local"
-}
+variable peer_vpc_id {}

@@ -50,7 +50,7 @@ Last step create subnets and associate them to route tables based on type (publi
 
 ```
 variable region {
-	default = "us-east-1"
+	default = "us-west-2pwd
 }
 variable subnet_list {
     type = "list"
