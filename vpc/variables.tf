@@ -14,4 +14,5 @@ variable tags {
 		Purpose = "Test"
 	}
 }
-variable peer_vpc_id {}
+variable peer_vpc_id { default = "" }
+variable environment {}

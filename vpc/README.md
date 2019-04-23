@@ -1,77 +1,73 @@
-# Build Custom VPC 
+# VPC Module
 
-## Create VPC 
-Module creates VPC with given CIDR, assign tags and return `vpc_id`
-* Inputs:  `CIDR` and `tags`
-```
-variable tags {
-	type = "map"
-	default {
-		Name = "ServicesVPC"
-		Owner = "SamsonGudise"
-		Purpose = "Service"
-	}
-}
-```
-```
-module "create-vpc" {
-	cidr_block = "10.10.0.0/16"
-	tags = "${var.tags}"
-	source  = "create-vpc"
-}
-```
-* Output: `vpc_id`
-```
-output "vpc_id" {
-	value = "vpc-12345abcdef"
-}
-```
+## Required parameters
 
-## Create Route Table
-Next step create public and private route tables. Also create  Internet Gateway and NAT Gateway(Optional)
-* Inputs: `vpc_id` and `tags`
-```
-module "create-routetable" {
-	tags = "${var.tags}"
-	vpc_id = "vpc-12345abcdef"
-	source = "create-routetable"
-}
-```
+1. **variable cidr_block{}**
 
-* Output: `route_table_ids (public, private)`
-```
-output "route_table_ids" {
-    value = ["rtb-1234567abcdef","rtb-910112344abcdef"]
-}
-```
-## Create Subnets
-Last step create subnets and associate them to route tables based on type (public or private)
-* Inputs: `subnet_list`, `availability_zone`, `region`, `vpc_id`, `route_tables` and `tags`.
+   
+   Use `tfvars` file(s) to pass any list of variables such as `cidr_block`, `region` etc., Keep your code dry! Deploy to multiple accounts and regions, just by exporting different environment variables.
 
-```
-variable region {
-	default = "us-west-2pwd
-}
-variable subnet_list {
-    type = "list"
-    default = ["name","type","name","type"]
-}
-variable availability_zone {
-    type = "list"
-    default = ["a","b","c"]
-}
+1. **variable region{}**
 
-```
-* Note: `name`  <- subnet name to subnet and `type` can be `public or private`  case sensitive keywords
-```
-module "create-subnets" {
-	tags = "${var.tags}"
-	subnet_list = "${var.subnet_list}"
-	availability_zone = "${var.availability_zone}"
-	region = "${var.region}"
-	vpc_id = "${output of create-vpc module}"
-	route_tables = "<${output of create-routetable module}>"
-	source = "create-subnet"
-}
-```
-* Output: None
+    Use `makefile` and `environment` variables to set `region` and `cidr_block` variables using `tfvars` file. 
+    ```
+    $ cat Makefile
+    init:
+        terraform init
+    plan:
+        terraform init -backend-config=${ENV}-${REGION}-backend.tfvars
+        terraform plan -out tfplan.out -var-file=${ENV}-${REGION}.tfvars
+
+    apply:
+        terraform apply tfplan.out
+
+    clean:
+        rm -rf .terraform
+    destroy:
+        terraform destroy -var-file=${ENV}-${REGION}.tfvars
+    ```
+    ```
+    $ export REGION=us-west-2
+    $ export ENV=volvocars
+    ```
+    ```
+    $ cat volvocars-us-west-2.tfvars
+    cidr_block="10.10.0.0/16"
+    region="us-west-2"
+    ```
+1. **variable subnet_list { type = "list" }**
+
+    ```
+        variable subnet_list { 
+            type = "list"
+            default = ["app","private","web","public"]
+        }
+    ```
+    `subnet_list` contains name and type.  Example above creates **app** `private subnets` and **web** `public subnets` in given availbility_zone `us-west-2a` `us-west-2b` and `us-west-2c`
+
+
+## Optional parameters
+1. **availability_zone**
+    
+    ```
+    variable availability_zone {
+        type = "list"
+        default = ["a","b","c"]
+    }
+    ```
+1. **variable peer_vpc_id {}**
+    
+    Pass `peer_vpc_id` to create vpc_peering across regions and accounts. 
+1. **variable tags { type = "map"}**
+
+    `tags` Optional variable. However, include following 3 map values `Name`, `Owner` and `Purpose` in addition to your own or skip tags.  Module use following default `tags`
+    ```
+    variable tags {
+	    type = "map"
+	    default {
+		    Name = "test-vpc"
+                Owner = "SamsonGudise"
+            Purpose = "Test"
+	    }
+    }
+    ```

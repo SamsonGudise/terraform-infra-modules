@@ -1,10 +1,14 @@
 variable cidr_block {}
 variable peer_vpc_id {}
 variable local_vpc_id {}
+variable tags { type = "map" }
 variable "peer_region" {}
+variable "peer_profile" {} 
+
 provider "aws" {
   alias  = "peer"
   region = "${var.peer_region}"
+  profile = "${peer_profile}"
   # Accepter's credentials.
 }
 
@@ -30,8 +34,11 @@ resource "aws_vpc_peering_connection" "peer" {
   peer_region   = "${var.peer_region}"
   auto_accept   = false
 
-  tags = {
+  tags  {
     Side = "Requester"
+    Name  = "${lookup(var.tags, "Name")}-Request"
+    Owner = "${lookup(var.tags, "Owner")}"
+    Purpose = "${lookup(var.tags, "Purpose")}"
   }
 }
 
@@ -41,8 +48,11 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
   vpc_peering_connection_id = "${aws_vpc_peering_connection.peer.id}"
   auto_accept               = true
 
-  tags = {
+  tags  {
     Side = "Accepter"
+    Name  = "${lookup(var.tags, "Name")}-Accepter"
+    Owner = "${lookup(var.tags, "Owner")}"
+    Purpose = "${lookup(var.tags, "Purpose")}"
   }
 }
 
