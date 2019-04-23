@@ -28,10 +28,10 @@
     ```
     ```
     $ export REGION=us-west-2
-    $ export ENV=volvocars
+    $ export ENV=test
     ```
     ```
-    $ cat volvocars-us-west-2.tfvars
+    $ cat test-us-west-2.tfvars
     cidr_block="10.10.0.0/16"
     region="us-west-2"
     ```

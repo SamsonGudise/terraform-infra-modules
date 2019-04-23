@@ -5,7 +5,7 @@ Terraform modules to build AWS Infrastructure
 
 1. **Clone, Branch, Commit Changes and Submit PR to Review**
     ```
-    git clone git@github.com:volvocars/infrastructure-modules.git
+    git clone git@github.com:SamsonGudise/aws-infrastructure.git
     ```
     ```
     $ git checkout -b "CCDV-001"
@@ -19,7 +19,7 @@ Terraform modules to build AWS Infrastructure
     git tag -a "v0.0.2" -m "New features"
     git push --follow-tags 
     ```
-3. **Update [repository](https://github.com/sgudise-volvocars/aws-infrastructure) to consume new version**
+3. **Update [repository](https://github.com/SamsonGudise/aws-infrastructure) to consume new version**
     
     Change v0.0.1 -> v0.0.2
     ```
@@ -29,6 +29,6 @@ Terraform modules to build AWS Infrastructure
         cidr_block = "${var.cidr_block}"
         peer_vpc_id =  "${var.peer_vpc_id}"
         tags = "${var.tags}"
-        # source  = "git::git@github.com:volvo-cars/infrastructure-modules.git//vpc?ref=v0.0.1"
-        source  = "git::git@github.com:volvo-cars/infrastructure-modules.git//vpc?ref=v0.0.2"
+        # source  = "git::git@github.com:SamsonGudise/infrastructure-modules.git//vpc?ref=v0.0.1"
+        source  = "git::git@github.com:SamsonGudise/infrastructure-modules.git//vpc?ref=v0.0.2"
     }
