@@ -128,7 +128,7 @@
 
         
         $ aws eks update-kubeconfig --name dev-eks1 --profile=dev     
-        Added new context arn:aws:eks:us-west-2:78982439923:cluster/qa-eks1 to /Users/testuser/.kube/config
+        Added new context arn:aws:eks:us-west-2:122524323692:cluster/qa-eks1 to /Users/testuser/.kube/config
         
 1. Validate your access to cluster
    You might get output like this below.
@@ -161,7 +161,7 @@ Get with Cluster Administrator, they need your `RoleARN` and `CanonicalARN` and 
 
 ### To be executed by Cluster administrator
 
-*  Required cluster administrator or `system:master` permissions. For this excercise,  I will be providing access to FullAccess to  `demo` namespace  for user's  CanonicalARN:`arn:aws:iam::741018200149:role/AWSReservedSSO_AdministratorAccess_317bbdb6c7f7422b`
+*  Required cluster administrator or `system:master` permissions. For this excercise,  I will be providing access to FullAccess to  `demo` namespace  for user's  CanonicalARN:`arn:aws:iam::122524323692:role/AWSReservedSSO_AdministratorAccess_317bbdb6c7f7422b`
 
 1. Update `roles.yaml` for your namespace. You need to create exact copy and update `namespace` and `name` under `metadata` to match naming convention and apply changes.
 
@@ -212,8 +212,8 @@ Get with Cluster Administrator, they need your `RoleARN` and `CanonicalARN` and 
 * Insert `rolearn`, `username` and `groups` under `mapRoles: |` 
     
 
-        - rolearn: arn:aws:iam::741018200149:role/AWSReservedSSO_AdministratorAccess_317bbdb6c7f7422b <- CanonicalARN
-          username: arn:aws:iam::741018200149:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_AdministratorAccess_317bbdb6c7f7422b <- RoleARN
+        - rolearn: arn:aws:iam::122524323692:role/AWSReservedSSO_AdministratorAccess_317bbdb6c7f7422b <- CanonicalARN
+          username: arn:aws:iam::122524323692:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_AdministratorAccess_317bbdb6c7f7422b <- RoleARN
           groups:
             - demo-role
         
